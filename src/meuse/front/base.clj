@@ -15,12 +15,13 @@
    (page/include-css "/static/css/style.css")])
 
 (defn menu
-  [public-frontend]
+  [public-frontend config]
   [:div {:id "menu"}
    [:div {:class "row"}
 
-    (link-to {:id "title"} "/front"
-             "Meuse")
+    (if-let [title (:title config)]
+      (do (link-to {:id "title"} "/front" title))
+      (do (link-to {:id "title"} "/front" "Meuse")))
 
     [:div {:id "menu-search"}
      [:form {:action "/front/search" :method "get"}
@@ -47,24 +48,26 @@
                :onclick "document.getElementById('logout').submit(); return false;"}
            "Logout"]]]])]]])
 
-(def footer
+(defn footer
+  [config]
   [:footer {:class "container"}
    [:p
-    [:a {:href "https://meuse.mcorbin.fr/"} "Documentation"] " · "
-    [:a {:href "https://github.com/mcorbin/meuse"} "Github"] " · "
-    "Made by " [:a {:href "https://mcorbin.fr"} "mcorbin"]]])
+    (when-let [documentation (:documentation config)]
+      [:a {:href documentation} "Documentation"])
+    " "
+    (when-let [repository (:repository config)]
+      [:a {:href repository} "Repository"])]])
 
 (defn html
-  [body public-frontend]
+  [body public-frontend config]
   (page/html5
    {:lang "en"}
    head
    [:body
     [:div {:id "content"}
-     (menu public-frontend)
-     [:div {:id "core"}
-      body]
-     footer]
+     (menu public-frontend config)
+     [:div {:id "core"} body]
+     (footer config)]
     (page/include-js "/static/js/jquery-3.4.1.slim.min.js")
     (page/include-js "/static/js/popper.min.js")
     (page/include-js "/static/js/bootstrap.min.js")]))

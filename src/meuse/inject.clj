@@ -1,5 +1,6 @@
 (ns meuse.inject
-  (:require [meuse.api.crate.download :as download]
+  (:require [meuse.config :refer [config]]
+            [meuse.api.crate.download :as download]
             [meuse.api.crate.http :refer [crates-api!]]
             [meuse.api.crate.new :as new]
             [meuse.api.crate.owner :as owner]
@@ -162,6 +163,7 @@
                              crate-db
                              crate-version-db
                              user-db
+                             (:frontend config)
                              request))
 
     (defmethod front-page! :search
@@ -198,7 +200,7 @@
       [request]
       {:status 200
        :headers {"Content-Type" "text/html; charset=utf-8"}
-       :body (base-http/html (front-page! request) public-frontend)})
+       :body (base-http/html (front-page! request) public-frontend (:frontend config))})
 
     (when-not public-frontend
       (defmethod front-api! :login

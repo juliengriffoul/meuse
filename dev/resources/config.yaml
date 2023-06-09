@@ -33,3 +33,6 @@ frontend:
   enabled: true
   secret: !secret uJo8QrRAANokteN_xVxpP75lc_A5Sw6t
   public: false
+  repository: "https://github.com/mcorbin/meuse"
+  documentation: "https://meuse.mcorbin.fr/"
+  title: "Meuse"
