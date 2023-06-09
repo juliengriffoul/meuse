@@ -5,7 +5,7 @@ database:
   port: 5432
   name: "meuse"
 http:
-  address: 127.0.0.1
+  address: 0.0.0.0
   port: 8855
 logging:
   level: debug
@@ -31,7 +31,7 @@ crate:
   path: "crates"
 frontend:
   enabled: true
-  secret: !secret uJo8QrRAANokteN_xVxpP75lc_A5Sw6t
+  secret: !envsecret "FRONTEND_SECRET"
   public: false
   repository: "https://github.com/mcorbin/meuse"
   documentation: "https://meuse.mcorbin.fr/"

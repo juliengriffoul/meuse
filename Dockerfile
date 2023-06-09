@@ -1,4 +1,4 @@
-FROM clojure:temurin-17-lein-focal as build-env
+FROM clojure:temurin-17-lein-focal as build
 
 ADD . /app
 WORKDIR /app
@@ -7,16 +7,32 @@ RUN lein uberjar
 
 # -----------------------------------------------------------------------------
 
-from eclipse-temurin:17-focal
+FROM eclipse-temurin:17-focal
 
-RUN groupadd -r meuse && useradd -r -s /bin/false -g meuse meuse
+ARG ID
+ARG TOKEN
+ARG NAME
+ARG EMAIL
+ARG REGISTRY
+
 RUN mkdir /app
-COPY --from=build-env /app/target/*uberjar/meuse-*-standalone.jar /app/meuse.jar
+COPY --from=build /app/target/*uberjar/meuse-*-standalone.jar /app/meuse.jar
+COPY --from=build-env /app/dev/resources/config.yaml /app/dev/resources/config.yaml
 
-RUN chown -R meuse:meuse /app
+RUN apt-get update && apt-get install -y git
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y git
-user meuse
+ENV ID=$ID
+ENV TOKEN=$TOKEN
+ENV NAME=$NAME
+ENV EMAIL=$EMAIL
+ENV REGISTRY=$REGISTRY
+
+RUN git config --global user.email $EMAIL && \
+    git config --global user.name "${NAME}" && \
+    git config --global url."https://${ID}:${TOKEN}@github.com/".insteadOf "https://github.com/"
+
+RUN git clone $REGISTRY registry && \
+    git config --global --add safe.directory /registry
 
 ENTRYPOINT ["java"]
 
