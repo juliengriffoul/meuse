@@ -17,7 +17,7 @@ ARG REGISTRY
 
 RUN mkdir /app
 COPY --from=build /app/target/*uberjar/meuse-*-standalone.jar /app/meuse.jar
-COPY --from=build-env /app/dev/resources/config.yaml /app/dev/resources/config.yaml
+COPY --from=build /app/dev/resources/config.yaml /app/config.yaml
 
 RUN apt-get update && apt-get install -y git
 
