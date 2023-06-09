@@ -19,8 +19,9 @@
   [:div {:id "menu"}
    [:div {:class "row"}
 
-    (link-to {:id "title"} "/front"
-             (:title config))
+    (if-let [title (:title config)]
+      (do (link-to {:id "title"} "/front" title))
+      (do (link-to {:id "title"} "/front" "Meuse")))
 
     [:div {:id "menu-search"}
      [:form {:action "/front/search" :method "get"}
@@ -51,8 +52,11 @@
   [config]
   [:footer {:class "container"}
    [:p
-    [:a {:href (:documentation config)} "Documentation"] " · "
-    [:a {:href (:repository config)} "Repository"]]])
+    (when-let [documentation (:documentation config)]
+      [:a {:href documentation} "Documentation"])
+    " "
+    (when-let [repository (:repository config)]
+      [:a {:href repository} "Repository"])]])
 
 (defn html
   [body public-frontend config]

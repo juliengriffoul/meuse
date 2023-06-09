@@ -40,10 +40,12 @@
 
    [:div {:class "row"}
     [:div {:class "col-12 center index-links"}
-     [:a {:class "btn btn-secondary btn-lg" :role "button" :href (:documentation config)}
-      "Documentation"]
-     [:a {:class "btn btn-secondary btn-lg" :role "button" :href (:repository config)}
-      "Repository"]]]
+     (when-let [documentation (:documentation config)]
+       [:a {:class "btn btn-secondary btn-lg" :role "button" :href documentation}
+        "Documentation"])
+     (when-let [repository (:repository config)]
+       [:a {:class "btn btn-secondary btn-lg" :role "button" :href repository}
+        "Repository"])]]
 
    [:div {:class "row index-stats-row"}
     [:div {:class "col-12 col-md-7"}
