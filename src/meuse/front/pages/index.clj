@@ -31,7 +31,7 @@
          "see"]]))])
 
 (defn index-page
-  [category-db crate-db crate-version-db user-db request]
+  [category-db crate-db crate-version-db user-db config request]
   [:div {:id "page-index"}
 
    [:div {:class "row"}
@@ -40,10 +40,10 @@
 
    [:div {:class "row"}
     [:div {:class "col-12 center index-links"}
-     [:a {:class "btn btn-secondary btn-lg" :role "button" :href "https://meuse.mcorbin.fr/"}
+     [:a {:class "btn btn-secondary btn-lg" :role "button" :href (:documentation config)}
       "Documentation"]
-     [:a {:class "btn btn-secondary btn-lg" :role "button" :href "https://github.com/mcorbin/meuse"}
-      "Github"]]]
+     [:a {:class "btn btn-secondary btn-lg" :role "button" :href (:repository config)}
+      "Repository"]]]
 
    [:div {:class "row index-stats-row"}
     [:div {:class "col-12 col-md-7"}

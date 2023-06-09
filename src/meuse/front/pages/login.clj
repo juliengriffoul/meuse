@@ -1,5 +1,6 @@
 (ns meuse.front.pages.login
-  (:require [meuse.front.base :as base]
+  (:require [meuse.config :refer [config]]
+            [meuse.front.base :as base]
             [hiccup.page :as page]))
 
 (defn page
@@ -22,4 +23,4 @@
                 :placeholder "password"}]
        " - "
        [:button {:type "submit"} "Log in"]]]
-     base/footer]]))
+     (base/footer (:frontend config))]]))
